@@ -1,0 +1,54 @@
+{
+  "tariffs": [
+    {
+      "product": "Laptop",
+      "hsCode": "8471",
+      "origin": "China",
+      "destination": "India",
+      "oldTariff": 10,
+      "newTariff": 18,
+      "change": 8,
+      "risk": "HIGH"
+    },
+    {
+      "product": "Electric Motor",
+      "hsCode": "8501",
+      "origin": "China",
+      "destination": "India",
+      "oldTariff": 8,
+      "newTariff": 15,
+      "change": 7,
+      "risk": "HIGH"
+    },
+    {
+      "product": "Display Panel",
+      "hsCode": "8528",
+      "origin": "South Korea",
+      "destination": "India",
+      "oldTariff": 5,
+      "newTariff": 7,
+      "change": 2,
+      "risk": "MEDIUM"
+    },
+    {
+      "product": "Solar Module",
+      "hsCode": "8541",
+      "origin": "Vietnam",
+      "destination": "India",
+      "oldTariff": 12,
+      "newTariff": 16,
+      "change": 4,
+      "risk": "MEDIUM"
+    },
+    {
+      "product": "Industrial Sensor",
+      "hsCode": "9031",
+      "origin": "Germany",
+      "destination": "India",
+      "oldTariff": 4,
+      "newTariff": 6,
+      "change": 2,
+      "risk": "LOW"
+    }
+  ]
+}
