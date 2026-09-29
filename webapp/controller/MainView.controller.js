@@ -25,17 +25,84 @@ sap.ui.define([
 
             onInit: function () {
 
-                // Product search value
                 this._sProductFilter = "";
 
-                // Risk filter
                 this._sRiskFilter = "ALL";
 
-                // Approval status
                 this._approvalStatus = "PENDING";
+                this.getView().setModel(new sap.ui.model.json.JSONModel({ tariffs: [] }));
+
+                // Load tariff data from SAP CAP backend
+                this._loadBackendTariffs();
 
             },
 
+
+            // =========================================================
+            // LOAD TARIFF DATA FROM SAP CAP BACKEND
+            // =========================================================
+
+_loadBackendTariffs: function () {
+    var oModel = this.getView().getModel();
+
+    Promise.all([
+        fetch("/tariff/TariffRules").then(function (response) {
+            return response.json();
+        }),
+        fetch("/tariff/Products").then(function (response) {
+            return response.json();
+        })
+    ])
+        .then(function (aResults) {
+            var aTariffs = aResults[0].value || [];
+            var aProducts = aResults[1].value || [];
+
+            var aMappedTariffs = aTariffs.map(function (tariff) {
+                var product = aProducts.find(function (item) {
+                    return item.hsCode === tariff.hsCode;
+                });
+
+                var oldRate = Number(tariff.previousTariffRate || 0);
+                var newRate = Number(tariff.tariffRate || 0);
+
+                var risk = "LOW";
+
+                if (oldRate > 0) {
+                    var relativeIncrease =
+                        ((newRate - oldRate) / oldRate) * 100;
+
+                    if (relativeIncrease > 30) {
+                        risk = "HIGH";
+                    } else if (relativeIncrease >= 10) {
+                        risk = "MEDIUM";
+                    }
+                }
+
+                return {
+                    product: product ? product.productName : tariff.hsCode,
+                    hsCode: tariff.hsCode,
+                    origin: tariff.originCountryCode,
+                    destination: tariff.destinationCountryCode,
+                    oldTariff: oldRate,
+                    newTariff: newRate,
+                    change: newRate - oldRate,
+                    risk: risk
+                };
+            });
+
+            oModel.setProperty("/tariffs", aMappedTariffs);
+
+            MessageToast.show(
+                "CAP backend connected: " +
+                aMappedTariffs.length +
+                " tariff rules loaded."
+            );
+        })
+        .catch(function (error) {
+            console.error("Failed to load tariff data:", error);
+            MessageToast.show("Could not load tariff data from CAP backend.");
+        });
+},
 
             // =========================================================
             // TARIFF MONITOR - PRODUCT SEARCH
@@ -77,7 +144,8 @@ sap.ui.define([
                     return;
                 }
 
-                var oBinding = oTable.getBinding("items");
+                var oBinding =
+                    oTable.getBinding("items");
 
                 if (!oBinding) {
                     return;
@@ -250,12 +318,8 @@ sap.ui.define([
                 }
 
 
-                var oModel =
-                    this.getView().getModel();
-
-                if (oModel) {
-                    oModel.refresh(true);
-                }
+                // Reload CAP data
+                this._loadBackendTariffs();
 
 
                 MessageToast.show(
@@ -271,32 +335,186 @@ sap.ui.define([
 
             onAnalyzeImpact: function () {
 
+                var that = this;
+
                 MessageToast.show(
                     "Impact Agent analyzing tariff exposure..."
                 );
 
+                fetch("/ai/analyze", {
+                    method: "POST",
 
-                setTimeout(function () {
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
 
-                    MessageBox.information(
+                    body: JSON.stringify({
+                        event_index: 0
+                    })
+                })
 
+                .then(function (response) {
+
+                    if (!response.ok) {
+                        throw new Error(
+                            "AI Engine returned HTTP " +
+                            response.status
+                        );
+                    }
+
+                    return response.json();
+
+                })
+
+                .then(function (result) {
+
+                    that._aiResult = result;
+
+                    if (
+                        result.status !==
+                        "DISRUPTION_DETECTED"
+                    ) {
+
+                        MessageBox.information(
+                            "No supply-chain disruption was detected.",
+                            {
+                                title: "AI Impact Analysis"
+                            }
+                        );
+
+                        return;
+                    }
+
+
+                    var sensing =
+                        result.sensing || {};
+
+                    var impact =
+                        result.impact || {};
+
+                    var planning =
+                        result.planning || {};
+
+                    var financial =
+                        impact.financial_impact || {};
+
+                    var inventory =
+                        impact.inventory_impact || {};
+
+                    var risk =
+                        impact.risk || {};
+
+                    var recommendation =
+                        planning.overall_recommendation || {};
+
+
+                    var message =
                         "Impact analysis completed.\n\n" +
 
-                        "Affected suppliers: 3\n" +
+                        "Product: " +
+                        (
+                            impact.product_name ||
+                            sensing.product_id ||
+                            "N/A"
+                        ) +
 
-                        "Affected purchase orders: 12\n" +
+                        "\n\n" +
 
-                        "Estimated cost impact: ₹24.6 Lakhs\n" +
+                        "Tariff: " +
+                        (sensing.old_tariff || 0) +
+                        "% → " +
+                        (sensing.new_tariff || 0) +
+                        "%\n\n" +
 
-                        "Supply risk: HIGH",
+                        "Tariff increase: " +
+                        (sensing.tariff_change || 0) +
+                        " percentage points\n\n" +
 
+                        "New landed cost: " +
+                        (
+                            financial.new_landed_cost ||
+                            "N/A"
+                        ) +
+                        " per unit\n\n" +
+
+                        "Inventory coverage: " +
+                        (
+                            inventory.inventory_days ||
+                            "N/A"
+                        ) +
+                        " days\n\n" +
+
+                        "Production risk: " +
+                        (
+                            risk.production_risk ||
+                            "N/A"
+                        ) +
+
+                        "\n\n" +
+
+                        "Recommended supplier: " +
+                        (
+                            recommendation.supplier_name ||
+                            "N/A"
+                        ) +
+
+                        "\n\n" +
+
+                        "Supplier country: " +
+                        (
+                            recommendation.country ||
+                            "N/A"
+                        ) +
+
+                        "\n\n" +
+
+                        "Recommendation: " +
+                        (
+                            recommendation.action ||
+                            "Evaluate alternative supplier"
+                        ) +
+
+                        "\n\n" +
+
+                        "Human approval required: " +
+                        (
+                            recommendation.requires_human_approval
+                                ? "YES"
+                                : "NO"
+                        );
+
+
+                    MessageBox.information(
+                        message,
                         {
                             title: "AI Impact Analysis"
                         }
-
                     );
 
-                }, 1000);
+
+                    MessageToast.show(
+                        "Real AI Impact Analysis completed successfully."
+                    );
+
+                })
+
+                .catch(function (error) {
+
+                    console.error(
+                        "AI Engine Error:",
+                        error
+                    );
+
+                    MessageBox.error(
+                        "Could not connect to the AI Agent Engine.\n\n" +
+                        "Error: " +
+                        error.message,
+                        {
+                            title: "AI Engine Connection Error"
+                        }
+                    );
+
+                });
 
             },
 
@@ -656,7 +874,28 @@ sap.ui.define([
 
             onApprove: function () {
 
-                this._approvalStatus = "APPROVED";
+                this._approvalStatus =
+                    "APPROVED";
+
+                var oApprovalStatus = this.byId("approvalStatus");
+                var oExecutionStatus = this.byId("executionStatus");
+                var oRecommendationStatus = this.byId("recommendationStatus");
+
+                if (oApprovalStatus) {
+                    oApprovalStatus.setInfo("APPROVED");
+                    oApprovalStatus.setInfoState("Success");
+                }
+
+                if (oExecutionStatus) {
+                    oExecutionStatus.setInfo("TRIGGERED");
+                    oExecutionStatus.setInfoState("Success");
+                }
+
+                if (oRecommendationStatus) {
+                    oRecommendationStatus.setText("APPROVED");
+                    oRecommendationStatus.setState("Success");
+                    oRecommendationStatus.setIcon("sap-icon://accept");
+                }
 
 
                 MessageBox.success(
@@ -685,7 +924,28 @@ sap.ui.define([
 
             onReject: function () {
 
-                this._approvalStatus = "REJECTED";
+                this._approvalStatus =
+                    "REJECTED";
+
+                var oApprovalStatus = this.byId("approvalStatus");
+                var oExecutionStatus = this.byId("executionStatus");
+                var oRecommendationStatus = this.byId("recommendationStatus");
+
+                if (oApprovalStatus) {
+                    oApprovalStatus.setInfo("REJECTED");
+                    oApprovalStatus.setInfoState("Error");
+                }
+
+                if (oExecutionStatus) {
+                    oExecutionStatus.setInfo("NOT EXECUTED");
+                    oExecutionStatus.setInfoState("Error");
+                }
+
+                if (oRecommendationStatus) {
+                    oRecommendationStatus.setText("REJECTED");
+                    oRecommendationStatus.setState("Error");
+                    oRecommendationStatus.setIcon("sap-icon://decline");
+                }
 
 
                 MessageBox.warning(

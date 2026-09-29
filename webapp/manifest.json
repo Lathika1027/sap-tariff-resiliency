@@ -65,13 +65,8 @@
         "settings": {
           "bundleName": "com.hackfest.tariff.tariffresiliency.i18n.i18n"
         }
-      },
-
-    "":{
-      "type": "sap.ui.model.json.JSONModel",
-      "uri": "data/tariffs.json"
-    }
-  },
+      }
+    },
 
     "resources": {
       "css": [

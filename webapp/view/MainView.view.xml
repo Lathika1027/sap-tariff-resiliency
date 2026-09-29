@@ -1022,6 +1022,7 @@
                                         </VBox>
 
                                         <ObjectStatus
+                                            id="recommendationStatus"
                                             text="PENDING APPROVAL"
                                             state="Warning"
                                             icon="sap-icon://pending"/>
@@ -1227,6 +1228,7 @@
                                         infoState="Success"/>
 
                                     <StandardListItem
+                                        id="approvalStatus"
                                         title="Manager Approval"
                                         description="Human approval required"
                                         icon="sap-icon://approvals"
@@ -1234,6 +1236,7 @@
                                         infoState="Warning"/>
 
                                     <StandardListItem
+                                        id="executionStatus"
                                         title="Execution Agent"
                                         description="Supplier / PO changes will execute after approval"
                                         icon="sap-icon://process"

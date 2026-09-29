@@ -38,6 +38,7 @@ def health():
 
 
 @app.post("/analyze")
+@app.post("/ai/analyze")
 def analyze(request: AnalyzeRequest):
 
     try:

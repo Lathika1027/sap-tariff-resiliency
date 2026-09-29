@@ -40,6 +40,7 @@ entity TariffRules {
     originCountryCode         : String(3);
     destinationCountryCode    : String(3);
     tariffRate                : Decimal(10,2);
+    previousTariffRate        : Decimal(10,2);
     tariffType                : String(30);
     effectiveFrom             : Date;
     effectiveTo               : Date;
