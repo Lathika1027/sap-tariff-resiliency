@@ -92,6 +92,14 @@ _loadBackendTariffs: function () {
 
             oModel.setProperty("/tariffs", aMappedTariffs);
 
+            var productsAtRisk = aMappedTariffs.filter(function (item) {
+                return item.risk === "HIGH";
+            }).length;
+
+            oModel.setProperty("/kpis", {
+                productsAtRisk: productsAtRisk
+            });
+
             MessageToast.show(
                 "CAP backend connected: " +
                 aMappedTariffs.length +

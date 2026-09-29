@@ -51,7 +51,7 @@
 
                                     <TileContent>
                                         <NumericContent
-                                            value="24"
+                                            value="{/kpis/productsAtRisk}"
                                             valueColor="Error"
                                             icon="sap-icon://alert"/>
                                     </TileContent>
