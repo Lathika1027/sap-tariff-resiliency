@@ -1,0 +1,9 @@
+productId,productName,hsCode,category,unit,active,countryCode
+P001,Automotive Brake Pads,870830,Automotive,PCS,true,IND
+P002,Semiconductor Chip,854231,Electronics,PCS,true,CHN
+P003,Lithium Battery,850760,Battery,PCS,true,CHN
+P004,Steel Fastener,731815,Industrial,KG,true,IND
+P005,Aluminium Sheet,760612,Metals,KG,true,USA
+P006,Electronic Control Unit,853710,Automotive,PCS,true,DEU
+P007,Plastic Housing,392690,Industrial,PCS,true,VNM
+P008,Copper Wire,740819,Electrical,KG,true,JPN

@@ -1,0 +1,5 @@
+scenarioId,scenarioName,productId,currentSupplierId,alternativeSupplierId,shiftPercentage,currentTariff,newTariff,currentLandedCost,newLandedCost,currentLeadTime,newLeadTime,supplierRisk,createdAt
+SCN001,Shift China sourcing to India,P001,SUP002,SUP001,30.00,15.00,10.00,1050.00,920.00,28,12,25.00,2026-09-28T10:00:00Z
+SCN002,Shift battery sourcing to Korea,P003,SUP002,SUP008,40.00,20.00,10.00,540.00,515.00,28,21,40.00,2026-09-28T10:15:00Z
+SCN003,Shift ECU sourcing to Vietnam,P006,SUP003,SUP004,25.00,8.00,18.00,108.00,112.00,15,18,35.00,2026-09-28T10:30:00Z
+SCN004,Shift semiconductor sourcing to Korea,P002,SUP002,SUP008,50.00,15.00,12.00,145.00,138.00,28,21,40.00,2026-09-28T10:45:00Z

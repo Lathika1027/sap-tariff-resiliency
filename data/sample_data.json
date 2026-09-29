@@ -1,0 +1,79 @@
+{
+  "products": [
+    {
+      "id": "CHIP001",
+      "name": "Semiconductor Chip A",
+      "hs_code": "8541",
+      "daily_demand": 600,
+      "criticality": "HIGH"
+    },
+    {
+      "id": "CHIP002",
+      "name": "Power Management IC",
+      "hs_code": "8542",
+      "daily_demand": 400,
+      "criticality": "MEDIUM"
+    }
+  ],
+  "suppliers": [
+    {
+      "id": "SUP001",
+      "name": "Taiwan Semiconductor Supplier",
+      "country": "Taiwan",
+      "product_id": "CHIP001",
+      "unit_price": 100,
+      "lead_time_days": 5,
+      "capacity": 50000,
+      "risk": "HIGH"
+    },
+    {
+      "id": "SUP002",
+      "name": "Korea Semiconductor Supplier",
+      "country": "South Korea",
+      "product_id": "CHIP001",
+      "unit_price": 105,
+      "lead_time_days": 8,
+      "capacity": 70000,
+      "risk": "LOW"
+    },
+    {
+      "id": "SUP003",
+      "name": "Vietnam Semiconductor Supplier",
+      "country": "Vietnam",
+      "product_id": "CHIP001",
+      "unit_price": 102,
+      "lead_time_days": 4,
+      "capacity": 60000,
+      "risk": "LOW"
+    }
+  ],
+  "inventory": [
+    {
+      "product_id": "CHIP001",
+      "quantity": 5000
+    },
+    {
+      "product_id": "CHIP002",
+      "quantity": 3200
+    }
+  ],
+  "tariffs": [
+    {
+      "product_id": "CHIP001",
+      "origin": "Taiwan",
+      "destination": "India",
+      "old_tariff": 5,
+      "new_tariff": 15
+    }
+  ],
+  "events": [
+    {
+      "event_id": "EVT001",
+      "event_type": "TARIFF_CHANGE",
+      "product_id": "CHIP001",
+      "origin": "Taiwan",
+      "destination": "India",
+      "timestamp": "2026-09-28T10:30:00"
+    }
+  ]
+}

@@ -1,0 +1,1266 @@
+<mvc:View
+    controllerName="com.hackfest.tariff.tariffresiliency.controller.MainView"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    displayBlock="true">
+
+    <Page
+        title="SAP Tariff Resiliency"
+        class="sapUiResponsiveContentPadding">
+
+        <content>
+
+            <IconTabBar
+                id="mainTabBar"
+                expandable="false"
+                class="sapUiResponsiveContentPadding">
+
+                <items>
+
+                    <!-- ================================================= -->
+                    <!-- DASHBOARD -->
+                    <!-- ================================================= -->
+
+                    <IconTabFilter
+                        key="dashboard"
+                        text="Dashboard"
+                        icon="sap-icon://home">
+
+                        <VBox class="sapUiMediumMargin">
+
+                            <Title
+                                text="Supply Chain Resilience Command Center"
+                                level="H2"/>
+
+                            <Text
+                                text="AI-powered monitoring, impact analysis and sourcing resilience"
+                                class="sapUiTinyMarginBottom"/>
+
+
+                            <!-- KPI ROW -->
+
+                            <HBox
+                                wrap="Wrap"
+                                justifyContent="SpaceBetween"
+                                class="sapUiMediumMarginTop">
+
+                                <GenericTile
+                                    header="Products at Risk"
+                                    subheader="Tariff exposure">
+
+                                    <TileContent>
+                                        <NumericContent
+                                            value="24"
+                                            valueColor="Error"
+                                            icon="sap-icon://alert"/>
+                                    </TileContent>
+
+                                </GenericTile>
+
+
+                                <GenericTile
+                                    header="Cost Impact"
+                                    subheader="Estimated exposure">
+
+                                    <TileContent>
+                                        <NumericContent
+                                            value="2.4"
+                                            scale="M"
+                                            valueColor="Critical"
+                                            icon="sap-icon://money-bills"/>
+                                    </TileContent>
+
+                                </GenericTile>
+
+
+                                <GenericTile
+                                    header="Affected Suppliers"
+                                    subheader="Supply network">
+
+                                    <TileContent>
+                                        <NumericContent
+                                            value="8"
+                                            valueColor="Critical"
+                                            icon="sap-icon://group"/>
+                                    </TileContent>
+
+                                </GenericTile>
+
+
+                                <GenericTile
+                                    header="Open POs"
+                                    subheader="Require attention">
+
+                                    <TileContent>
+                                        <NumericContent
+                                            value="12"
+                                            valueColor="Critical"
+                                            icon="sap-icon://cart"/>
+                                    </TileContent>
+
+                                </GenericTile>
+
+                            </HBox>
+
+
+                            <!-- SYSTEM STATUS -->
+
+                            <Panel
+                                headerText="AI Agent Network"
+                                class="sapUiMediumMarginTop">
+
+                                <HBox
+                                    wrap="Wrap"
+                                    justifyContent="SpaceAround"
+                                    class="sapUiSmallMargin">
+
+                                    <ObjectStatus
+                                        text="Tariff Agent • Active"
+                                        state="Success"
+                                        icon="sap-icon://sys-enter-2"/>
+
+                                    <ObjectStatus
+                                        text="Impact Agent • Active"
+                                        state="Success"
+                                        icon="sap-icon://process"/>
+
+                                    <ObjectStatus
+                                        text="Supplier Agent • Ready"
+                                        state="Success"
+                                        icon="sap-icon://group"/>
+
+                                    <ObjectStatus
+                                        text="Simulation Agent • Ready"
+                                        state="Success"
+                                        icon="sap-icon://simulate"/>
+
+                                    <ObjectStatus
+                                        text="Decision Agent • Ready"
+                                        state="Success"
+                                        icon="sap-icon://decision"/>
+
+                                </HBox>
+
+                            </Panel>
+
+
+                            <!-- HIGH RISK -->
+
+                            <Panel
+                                headerText="Live Tariff Exposure"
+                                class="sapUiMediumMarginTop">
+
+                                <Table
+                                    id="dashboardTariffTable"
+                                    items="{/tariffs}"
+                                    growing="true">
+
+                                    <columns>
+
+                                        <Column>
+                                            <Text text="Product"/>
+                                        </Column>
+
+                                        <Column>
+                                            <Text text="Origin"/>
+                                        </Column>
+
+                                        <Column>
+                                            <Text text="Tariff"/>
+                                        </Column>
+
+                                        <Column>
+                                            <Text text="Change"/>
+                                        </Column>
+
+                                        <Column>
+                                            <Text text="Risk"/>
+                                        </Column>
+
+                                    </columns>
+
+                                    <items>
+
+                                        <ColumnListItem>
+
+                                            <cells>
+
+                                                <Text text="{product}"/>
+
+                                                <Text text="{origin}"/>
+
+                                                <ObjectNumber
+                                                    number="{newTariff}"
+                                                    unit="%"/>
+
+                                                <ObjectNumber
+                                                    number="{change}"
+                                                    unit="%"
+                                                    state="Error"/>
+
+                                                <ObjectStatus
+                                                    text="{risk}"
+                                                    state="Error"/>
+
+                                            </cells>
+
+                                        </ColumnListItem>
+
+                                    </items>
+
+                                </Table>
+
+                            </Panel>
+
+                        </VBox>
+
+                    </IconTabFilter>
+
+
+                    <!-- ================================================= -->
+                    <!-- TARIFF MONITOR -->
+                    <!-- ================================================= -->
+
+                    <IconTabFilter
+                        key="tariff"
+                        text="Tariff Monitor"
+                        icon="sap-icon://search">
+
+                        <VBox class="sapUiMediumMargin">
+
+                            <Title
+                                text="Tariff Monitor"
+                                level="H2"/>
+
+                            <Text
+                                text="Track tariff changes and identify exposed products"
+                                class="sapUiTinyMarginBottom"/>
+
+
+                            <Toolbar class="sapUiSmallMarginTop">
+
+                                <Label text="Product"/>
+
+                                <Input
+                                    id="productSearch"
+                                    width="220px"
+                                    placeholder="Search product..."
+                                    liveChange=".onProductSearch"/>
+
+                                <ToolbarSeparator/>
+
+                                <Label text="Risk"/>
+
+                                <Select
+                                    id="riskSelect"
+                                    selectedKey="ALL"
+                                    change=".onRiskFilter"
+                                    width="150px">
+
+                                    <items>
+
+                                        <core:Item
+                                            key="ALL"
+                                            text="All Risks"/>
+
+                                        <core:Item
+                                            key="HIGH"
+                                            text="High"/>
+
+                                        <core:Item
+                                            key="MEDIUM"
+                                            text="Medium"/>
+
+                                        <core:Item
+                                            key="LOW"
+                                            text="Low"/>
+
+                                    </items>
+
+                                </Select>
+
+                                <ToolbarSpacer/>
+
+                                <Button
+                                    text="Refresh"
+                                    icon="sap-icon://refresh"
+                                    type="Emphasized"
+                                    press=".onRefresh"/>
+
+                            </Toolbar>
+
+
+                            <Table
+                                id="tariffTable"
+                                items="{/tariffs}"
+                                growing="true"
+                                noDataText="No tariffs match the selected filters."
+                                class="sapUiMediumMarginTop">
+
+                                <columns>
+
+                                    <Column>
+                                        <Text text="Product"/>
+                                    </Column>
+
+                                    <Column>
+                                        <Text text="HS Code"/>
+                                    </Column>
+
+                                    <Column>
+                                        <Text text="Origin"/>
+                                    </Column>
+
+                                    <Column>
+                                        <Text text="Destination"/>
+                                    </Column>
+
+                                    <Column>
+                                        <Text text="Old Tariff"/>
+                                    </Column>
+
+                                    <Column>
+                                        <Text text="New Tariff"/>
+                                    </Column>
+
+                                    <Column>
+                                        <Text text="Change"/>
+                                    </Column>
+
+                                    <Column>
+                                        <Text text="Risk"/>
+                                    </Column>
+
+                                </columns>
+
+                                <items>
+
+                                    <ColumnListItem>
+
+                                        <cells>
+
+                                            <Text text="{product}"/>
+
+                                            <Text text="{hsCode}"/>
+
+                                            <Text text="{origin}"/>
+
+                                            <Text text="{destination}"/>
+
+                                            <Text text="{oldTariff}%"/>
+
+                                            <Text text="{newTariff}%"/>
+
+                                            <ObjectNumber
+                                                number="{change}"
+                                                unit="%"
+                                                state="Error"/>
+
+                                            <ObjectStatus
+                                                text="{risk}"
+                                                state="Error"/>
+
+                                        </cells>
+
+                                    </ColumnListItem>
+
+                                </items>
+
+                            </Table>
+
+                        </VBox>
+
+                    </IconTabFilter>
+
+
+                    <!-- ================================================= -->
+                    <!-- IMPACT ANALYSIS -->
+                    <!-- ================================================= -->
+
+                    <IconTabFilter
+                        key="impact"
+                        text="Impact Analysis"
+                        icon="sap-icon://business-objects-experience">
+
+                        <VBox class="sapUiMediumMargin">
+
+                            <Title
+                                text="AI Impact Analysis"
+                                level="H2"/>
+
+                            <Text
+                                text="Impact Agent maps the tariff shock across products, suppliers, orders and routes."
+                                class="sapUiTinyMarginBottom"/>
+
+
+                            <!-- ALERT -->
+
+                            <MessageStrip
+                                text="TARIFF SHOCK DETECTED — Laptop imports from China increased from 10% to 18%."
+                                type="Error"
+                                showIcon="true"
+                                class="sapUiMediumMarginTop"/>
+
+
+                            <!-- SELECTED PRODUCT -->
+
+                            <Panel
+                                headerText="Detected Disruption"
+                                class="sapUiMediumMarginTop">
+
+                                <HBox
+                                    justifyContent="SpaceBetween"
+                                    wrap="Wrap"
+                                    class="sapUiMediumMargin">
+
+                                    <VBox>
+
+                                        <Label text="Product"/>
+
+                                        <Title
+                                            text="Laptop"
+                                            level="H3"/>
+
+                                    </VBox>
+
+                                    <VBox>
+
+                                        <Label text="HS Code"/>
+
+                                        <Title
+                                            text="8471"
+                                            level="H3"/>
+
+                                    </VBox>
+
+                                    <VBox>
+
+                                        <Label text="Route"/>
+
+                                        <Title
+                                            text="China → India"
+                                            level="H3"/>
+
+                                    </VBox>
+
+                                    <VBox>
+
+                                        <Label text="Risk"/>
+
+                                        <ObjectStatus
+                                            text="HIGH"
+                                            state="Error"
+                                            icon="sap-icon://alert"/>
+
+                                    </VBox>
+
+                                </HBox>
+
+                            </Panel>
+
+
+                            <!-- IMPACT KPIs -->
+
+                            <HBox
+                                wrap="Wrap"
+                                justifyContent="SpaceBetween"
+                                class="sapUiMediumMarginTop">
+
+                                <GenericTile
+                                    header="Tariff Increase"
+                                    subheader="Exposure">
+
+                                    <TileContent>
+                                        <NumericContent
+                                            value="8"
+                                            scale="%"
+                                            valueColor="Error"/>
+                                    </TileContent>
+
+                                </GenericTile>
+
+
+                                <GenericTile
+                                    header="Cost Impact"
+                                    subheader="Estimated">
+
+                                    <TileContent>
+                                        <NumericContent
+                                            value="24.6"
+                                            scale="L"
+                                            valueColor="Critical"/>
+                                    </TileContent>
+
+                                </GenericTile>
+
+
+                                <GenericTile
+                                    header="Suppliers"
+                                    subheader="Affected">
+
+                                    <TileContent>
+                                        <NumericContent
+                                            value="3"
+                                            valueColor="Critical"/>
+                                    </TileContent>
+
+                                </GenericTile>
+
+
+                                <GenericTile
+                                    header="Purchase Orders"
+                                    subheader="At risk">
+
+                                    <TileContent>
+                                        <NumericContent
+                                            value="12"
+                                            valueColor="Critical"/>
+                                    </TileContent>
+
+                                </GenericTile>
+
+                            </HBox>
+
+
+                            <!-- IMPACT MAP -->
+
+                            <Panel
+                                headerText="Impact Map"
+                                class="sapUiMediumMarginTop">
+
+                                <List>
+
+                                    <StandardListItem
+                                        title="Products"
+                                        description="24 products exposed to tariff changes"
+                                        icon="sap-icon://product"
+                                        info="HIGH"
+                                        infoState="Error"/>
+
+                                    <StandardListItem
+                                        title="Suppliers"
+                                        description="3 suppliers require sourcing review"
+                                        icon="sap-icon://group"
+                                        info="3"
+                                        infoState="Warning"/>
+
+                                    <StandardListItem
+                                        title="Purchase Orders"
+                                        description="12 open orders affected"
+                                        icon="sap-icon://cart"
+                                        info="12"
+                                        infoState="Error"/>
+
+                                    <StandardListItem
+                                        title="Logistics"
+                                        description="Alternative routes need evaluation"
+                                        icon="sap-icon://shipping-status"
+                                        info="REVIEW"
+                                        infoState="Warning"/>
+
+                                </List>
+
+                            </Panel>
+
+
+                            <!-- AGENT PROCESS -->
+
+                            <Panel
+                                headerText="Agent Analysis"
+                                class="sapUiMediumMarginTop">
+
+                                <VBox class="sapUiMediumMargin">
+
+                                    <ObjectStatus
+                                        text="Tariff Agent — Shock detected"
+                                        state="Success"
+                                        icon="sap-icon://accept"/>
+
+                                    <ProgressIndicator
+                                        percentValue="100"
+                                        displayValue="Completed"
+                                        state="Success"
+                                        class="sapUiTinyMarginBottom"/>
+
+
+                                    <ObjectStatus
+                                        text="Impact Agent — Exposure mapped"
+                                        state="Success"
+                                        icon="sap-icon://accept"/>
+
+                                    <ProgressIndicator
+                                        percentValue="100"
+                                        displayValue="Completed"
+                                        state="Success"
+                                        class="sapUiTinyMarginBottom"/>
+
+
+                                    <ObjectStatus
+                                        text="Supplier Agent — Alternatives identified"
+                                        state="Success"
+                                        icon="sap-icon://accept"/>
+
+                                    <ProgressIndicator
+                                        percentValue="100"
+                                        displayValue="Completed"
+                                        state="Success"/>
+
+                                </VBox>
+
+                            </Panel>
+
+
+                            <!-- AI RECOMMENDATION -->
+
+                            <Panel
+                                headerText="AI Recommendation"
+                                class="sapUiMediumMarginTop">
+
+                                <VBox class="sapUiMediumMargin">
+
+                                    <ObjectStatus
+                                        text="HIGH CONFIDENCE"
+                                        state="Success"
+                                        icon="sap-icon://accept"/>
+
+                                    <Title
+                                        text="Evaluate Vietnam as an alternative source"
+                                        level="H3"
+                                        class="sapUiSmallMarginTop"/>
+
+                                    <Text
+                                        text="The AI agents identified Vietnam as a potential alternative that can reduce tariff exposure while maintaining acceptable supply continuity."
+                                        class="sapUiSmallMarginTop"/>
+
+                                    <HBox
+                                        wrap="Wrap"
+                                        class="sapUiMediumMarginTop">
+
+                                        <ObjectStatus
+                                            text="Tariff: 18% → 8%"
+                                            state="Success"
+                                            class="sapUiSmallMarginEnd"/>
+
+                                        <ObjectStatus
+                                            text="Savings: ₹6.4L"
+                                            state="Success"
+                                            class="sapUiSmallMarginEnd"/>
+
+                                        <ObjectStatus
+                                            text="Lead Time: +4 days"
+                                            state="Warning"/>
+
+                                    </HBox>
+
+                                </VBox>
+
+                            </Panel>
+
+
+                            <Button
+                                text="Run Detailed Impact Analysis"
+                                icon="sap-icon://process"
+                                type="Emphasized"
+                                press=".onAnalyzeImpact"
+                                class="sapUiMediumMarginTop"/>
+
+                        </VBox>
+
+                    </IconTabFilter>
+
+
+                    <!-- ================================================= -->
+                    <!-- SCENARIO SIMULATOR -->
+                    <!-- ================================================= -->
+
+                    <IconTabFilter
+                        key="scenario"
+                        text="Scenario Simulator"
+                        icon="sap-icon://simulate">
+
+                        <VBox class="sapUiMediumMargin">
+
+                            <Title
+                                text="Sourcing Scenario Simulator"
+                                level="H2"/>
+
+                            <Text
+                                text="Simulation Agent compares sourcing strategies across cost, tariff, lead time and risk."
+                                class="sapUiTinyMarginBottom"/>
+
+
+                            <!-- INPUT PANEL -->
+
+                            <Panel
+                                headerText="Build Scenario"
+                                class="sapUiMediumMarginTop">
+
+                                <VBox class="sapUiMediumMargin">
+
+                                    <Label text="Product"/>
+
+                                    <Select
+                                        id="scenarioProduct"
+                                        selectedKey="Laptop"
+                                        width="100%"
+                                        class="sapUiTinyMarginBottom">
+
+                                        <items>
+
+                                            <core:Item
+                                                key="Laptop"
+                                                text="Laptop"/>
+
+                                            <core:Item
+                                                key="Electric Motor"
+                                                text="Electric Motor"/>
+
+                                            <core:Item
+                                                key="Display Panel"
+                                                text="Display Panel"/>
+
+                                            <core:Item
+                                                key="Solar Module"
+                                                text="Solar Module"/>
+
+                                            <core:Item
+                                                key="Industrial Sensor"
+                                                text="Industrial Sensor"/>
+
+                                        </items>
+
+                                    </Select>
+
+
+                                    <Label text="Current Source"/>
+
+                                    <Input
+                                        id="currentSource"
+                                        value="China"
+                                        width="100%"
+                                        class="sapUiTinyMarginBottom"/>
+
+
+                                    <Label text="Alternative Source"/>
+
+                                    <Select
+                                        id="alternativeSource"
+                                        selectedKey="Vietnam"
+                                        width="100%"
+                                        class="sapUiTinyMarginBottom">
+
+                                        <items>
+
+                                            <core:Item
+                                                key="Vietnam"
+                                                text="Vietnam"/>
+
+                                            <core:Item
+                                                key="India"
+                                                text="India"/>
+
+                                            <core:Item
+                                                key="South Korea"
+                                                text="South Korea"/>
+
+                                            <core:Item
+                                                key="Germany"
+                                                text="Germany"/>
+
+                                            <core:Item
+                                                key="Malaysia"
+                                                text="Malaysia"/>
+
+                                        </items>
+
+                                    </Select>
+
+
+                                    <Label text="Order Quantity"/>
+
+                                    <Input
+                                        id="quantityInput"
+                                        value="10000"
+                                        type="Number"
+                                        width="100%"
+                                        class="sapUiTinyMarginBottom"/>
+
+
+                                    <Button
+                                        text="Run AI Scenario Analysis"
+                                        icon="sap-icon://simulate"
+                                        type="Emphasized"
+                                        press=".onRunScenario"
+                                        class="sapUiSmallMarginTop"/>
+
+                                </VBox>
+
+                            </Panel>
+
+
+                            <!-- COMPARISON -->
+
+                            <Panel
+                                headerText="Scenario Comparison"
+                                class="sapUiMediumMarginTop">
+
+                                <Table
+                                    id="scenarioTable">
+
+                                    <columns>
+
+                                        <Column>
+                                            <Text text="Metric"/>
+                                        </Column>
+
+                                        <Column>
+                                            <Text text="Current Source"/>
+                                        </Column>
+
+                                        <Column>
+                                            <Text text="Alternative Source"/>
+                                        </Column>
+
+                                    </columns>
+
+                                    <items>
+
+                                        <ColumnListItem>
+
+                                            <cells>
+
+                                                <Text text="Tariff"/>
+
+                                                <ObjectNumber
+                                                    number="18"
+                                                    unit="%"
+                                                    state="Error"/>
+
+                                                <ObjectNumber
+                                                    number="8"
+                                                    unit="%"
+                                                    state="Success"/>
+
+                                            </cells>
+
+                                        </ColumnListItem>
+
+
+                                        <ColumnListItem>
+
+                                            <cells>
+
+                                                <Text text="Landed Cost"/>
+
+                                                <Text text="₹24.6L"/>
+
+                                                <Text text="₹18.2L"/>
+
+                                            </cells>
+
+                                        </ColumnListItem>
+
+
+                                        <ColumnListItem>
+
+                                            <cells>
+
+                                                <Text text="Lead Time"/>
+
+                                                <Text text="18 days"/>
+
+                                                <Text text="22 days"/>
+
+                                            </cells>
+
+                                        </ColumnListItem>
+
+
+                                        <ColumnListItem>
+
+                                            <cells>
+
+                                                <Text text="Supply Risk"/>
+
+                                                <ObjectStatus
+                                                    text="HIGH"
+                                                    state="Error"/>
+
+                                                <ObjectStatus
+                                                    text="MEDIUM"
+                                                    state="Warning"/>
+
+                                            </cells>
+
+                                        </ColumnListItem>
+
+                                    </items>
+
+                                </Table>
+
+                            </Panel>
+
+
+                            <!-- SAVINGS -->
+
+                            <Panel
+                                headerText="Simulation Result"
+                                class="sapUiMediumMarginTop">
+
+                                <VBox class="sapUiMediumMargin">
+
+                                    <Title
+                                        text="Recommended Strategy"
+                                        level="H3"/>
+
+                                    <Text
+                                        text="Shift a portion of sourcing from China to Vietnam."
+                                        class="sapUiSmallMarginTop"/>
+
+                                    <HBox
+                                        wrap="Wrap"
+                                        class="sapUiMediumMarginTop">
+
+                                        <ObjectStatus
+                                            text="₹6.4L potential savings"
+                                            state="Success"
+                                            icon="sap-icon://trend-up"
+                                            class="sapUiSmallMarginEnd"/>
+
+                                        <ObjectStatus
+                                            text="10% tariff reduction"
+                                            state="Success"
+                                            class="sapUiSmallMarginEnd"/>
+
+                                        <ObjectStatus
+                                            text="+4 days lead time"
+                                            state="Warning"/>
+
+                                    </HBox>
+
+                                </VBox>
+
+                            </Panel>
+
+
+                            <!-- AGENT STATUS -->
+
+                            <Panel
+                                headerText="Simulation Agent"
+                                class="sapUiMediumMarginTop">
+
+                                <VBox class="sapUiMediumMargin">
+
+                                    <ObjectStatus
+                                        text="Scenario generation complete"
+                                        state="Success"
+                                        icon="sap-icon://accept"/>
+
+                                    <ProgressIndicator
+                                        percentValue="100"
+                                        displayValue="100% — Analysis complete"
+                                        state="Success"/>
+
+                                </VBox>
+
+                            </Panel>
+
+                        </VBox>
+
+                    </IconTabFilter>
+
+
+                    <!-- ================================================= -->
+                    <!-- HUMAN IN THE LOOP -->
+                    <!-- ================================================= -->
+
+                    <IconTabFilter
+                        key="approval"
+                        text="Manager Approval"
+                        icon="sap-icon://approvals">
+
+                        <VBox class="sapUiMediumMargin">
+
+                            <Title
+                                text="Human-in-the-Loop Approval"
+                                level="H2"/>
+
+                            <Text
+                                text="AI can analyze and recommend. Critical sourcing decisions remain under manager control."
+                                class="sapUiTinyMarginBottom"/>
+
+
+                            <!-- APPROVAL ALERT -->
+
+                            <MessageStrip
+                                text="ACTION REQUIRED — A sourcing strategy is waiting for Procurement Manager approval."
+                                type="Warning"
+                                showIcon="true"
+                                class="sapUiMediumMarginTop"/>
+
+
+                            <!-- RECOMMENDATION -->
+
+                            <Panel
+                                headerText="AI Recommendation"
+                                class="sapUiMediumMarginTop">
+
+                                <VBox class="sapUiMediumMargin">
+
+                                    <HBox
+                                        justifyContent="SpaceBetween">
+
+                                        <VBox>
+
+                                            <Label text="Recommendation"/>
+
+                                            <Title
+                                                text="Switch Laptop sourcing"
+                                                level="H3"/>
+
+                                        </VBox>
+
+                                        <ObjectStatus
+                                            text="PENDING APPROVAL"
+                                            state="Warning"
+                                            icon="sap-icon://pending"/>
+
+                                    </HBox>
+
+
+                                    <Text
+                                        text="China → Vietnam"
+                                        class="sapUiSmallMarginTop"/>
+
+                                    <Text
+                                        text="Decision generated by Decision Agent."/>
+
+                                </VBox>
+
+                            </Panel>
+
+
+                            <!-- DECISION SUMMARY -->
+
+                            <Panel
+                                headerText="Decision Summary"
+                                class="sapUiMediumMarginTop">
+
+                                <Table>
+
+                                    <columns>
+
+                                        <Column>
+                                            <Text text="Factor"/>
+                                        </Column>
+
+                                        <Column>
+                                            <Text text="Current"/>
+                                        </Column>
+
+                                        <Column>
+                                            <Text text="Recommended"/>
+                                        </Column>
+
+                                    </columns>
+
+                                    <items>
+
+                                        <ColumnListItem>
+
+                                            <cells>
+
+                                                <Text text="Tariff"/>
+
+                                                <ObjectNumber
+                                                    number="18"
+                                                    unit="%"
+                                                    state="Error"/>
+
+                                                <ObjectNumber
+                                                    number="8"
+                                                    unit="%"
+                                                    state="Success"/>
+
+                                            </cells>
+
+                                        </ColumnListItem>
+
+
+                                        <ColumnListItem>
+
+                                            <cells>
+
+                                                <Text text="Landed Cost"/>
+
+                                                <Text text="₹24.6L"/>
+
+                                                <Text text="₹18.2L"/>
+
+                                            </cells>
+
+                                        </ColumnListItem>
+
+
+                                        <ColumnListItem>
+
+                                            <cells>
+
+                                                <Text text="Lead Time"/>
+
+                                                <Text text="18 days"/>
+
+                                                <Text text="22 days"/>
+
+                                            </cells>
+
+                                        </ColumnListItem>
+
+
+                                        <ColumnListItem>
+
+                                            <cells>
+
+                                                <Text text="Supply Risk"/>
+
+                                                <ObjectStatus
+                                                    text="HIGH"
+                                                    state="Error"/>
+
+                                                <ObjectStatus
+                                                    text="MEDIUM"
+                                                    state="Warning"/>
+
+                                            </cells>
+
+                                        </ColumnListItem>
+
+                                    </items>
+
+                                </Table>
+
+                            </Panel>
+
+
+                            <!-- CONFIDENCE -->
+
+                            <Panel
+                                headerText="AI Decision Confidence"
+                                class="sapUiMediumMarginTop">
+
+                                <VBox class="sapUiMediumMargin">
+
+                                    <HBox
+                                        justifyContent="SpaceBetween">
+
+                                        <Text text="Recommendation confidence"/>
+
+                                        <ObjectStatus
+                                            text="92%"
+                                            state="Success"/>
+
+                                    </HBox>
+
+                                    <ProgressIndicator
+                                        percentValue="92"
+                                        displayValue="92% confidence"
+                                        state="Success"
+                                        class="sapUiSmallMarginTop"/>
+
+                                    <Text
+                                        text="Agents evaluated tariff exposure, supplier availability, cost and lead-time trade-offs."
+                                        class="sapUiSmallMarginTop"/>
+
+                                </VBox>
+
+                            </Panel>
+
+
+                            <!-- APPROVAL BUTTONS -->
+
+                            <Panel
+                                headerText="Manager Decision"
+                                class="sapUiMediumMarginTop">
+
+                                <VBox class="sapUiMediumMargin">
+
+                                    <Text
+                                        text="Review the AI recommendation before execution."/>
+
+                                    <HBox
+                                        class="sapUiMediumMarginTop">
+
+                                        <Button
+                                            text="Approve &amp; Execute"
+                                            icon="sap-icon://accept"
+                                            type="Accept"
+                                            press=".onApprove"
+                                            class="sapUiSmallMarginEnd"/>
+
+                                        <Button
+                                            text="Reject Recommendation"
+                                            icon="sap-icon://decline"
+                                            type="Reject"
+                                            press=".onReject"/>
+
+                                    </HBox>
+
+                                </VBox>
+
+                            </Panel>
+
+
+                            <!-- EXECUTION -->
+
+                            <Panel
+                                headerText="Execution &amp; Audit Trail"
+                                class="sapUiMediumMarginTop">
+
+                                <List>
+
+                                    <StandardListItem
+                                        title="Decision Agent"
+                                        description="Recommendation generated"
+                                        icon="sap-icon://decision"
+                                        info="COMPLETED"
+                                        infoState="Success"/>
+
+                                    <StandardListItem
+                                        title="Manager Approval"
+                                        description="Human approval required"
+                                        icon="sap-icon://approvals"
+                                        info="PENDING"
+                                        infoState="Warning"/>
+
+                                    <StandardListItem
+                                        title="Execution Agent"
+                                        description="Supplier / PO changes will execute after approval"
+                                        icon="sap-icon://process"
+                                        info="WAITING"
+                                        infoState="Information"/>
+
+                                    <StandardListItem
+                                        title="Audit Log"
+                                        description="AI recommendation and manager decision recorded"
+                                        icon="sap-icon://activity-items"
+                                        info="ENABLED"
+                                        infoState="Success"/>
+
+                                </List>
+
+                            </Panel>
+
+                        </VBox>
+
+                    </IconTabFilter>
+
+                </items>
+
+            </IconTabBar>
+
+        </content>
+
+    </Page>
+
+</mvc:View>

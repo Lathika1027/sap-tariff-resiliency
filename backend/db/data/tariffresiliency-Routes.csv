@@ -1,0 +1,9 @@
+routeId,originCountryCode,destinationCountryCode,originPort,destinationPort,carrier,transitDays,congestionIndex,transportCost,currency,active
+R001,CHN,IND,Shanghai Port,Chennai Port,Maersk,18,65.00,2500.00,USD,true
+R002,CHN,USA,Shanghai Port,Los Angeles Port,MSC,22,78.00,3200.00,USD,true
+R003,DEU,IND,Hamburg Port,Chennai Port,Hapag-Lloyd,24,35.00,2800.00,EUR,true
+R004,VNM,USA,Ho Chi Minh Port,Los Angeles Port,Maersk,20,55.00,2400.00,USD,true
+R005,JPN,IND,Yokohama Port,Chennai Port,ONE,16,30.00,2200.00,USD,true
+R006,USA,IND,Los Angeles Port,Chennai Port,MSC,30,72.00,3500.00,USD,true
+R007,KOR,IND,Busan Port,Chennai Port,HMM,19,48.00,2300.00,USD,true
+R008,IND,USA,Chennai Port,Los Angeles Port,Maersk,25,42.00,2900.00,USD,true

@@ -1,0 +1,118 @@
+{
+  "_version": "1.89.0",
+  "sap.app": {
+    "id": "com.hackfest.tariff.tariffresiliency",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.32.0",
+      "toolsId": "3e109437-46c5-4dee-886d-5b2da90a16cd"
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "TariffResiliency-display": {
+          "semanticObject": "TariffResiliency",
+          "action": "display",
+          "title": "{{TariffResiliency-display.flpTitle}}",
+          "subTitle": "{{TariffResiliency-display.flpSubtitle}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": false,
+    "dependencies": {
+      "minUI5Version": "1.152.0",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "com.hackfest.tariff.tariffresiliency.i18n.i18n"
+        }
+      },
+
+    "":{
+      "type": "sap.ui.model.json.JSONModel",
+      "uri": "data/tariffs.json"
+    }
+  },
+
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "transition": "slide",
+        "type": "View",
+        "viewType": "XML",
+        "path": "com.hackfest.tariff.tariffresiliency.view",
+        "async": true,
+        "viewPath": "com.hackfest.tariff.tariffresiliency.view"
+      },
+      "routes": [
+        {
+          "name": "RouteMainView",
+          "pattern": ":?query:",
+          "target": [
+            "TargetMainView"
+          ]
+        }
+      ],
+      "targets": {
+        "TargetMainView": {
+          "id": "MainView",
+          "name": "MainView"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "com.hackfest.tariff.tariffresiliency.view.App",
+      "type": "XML",
+      "id": "App",
+      "async": true
+    }
+  }
+}
