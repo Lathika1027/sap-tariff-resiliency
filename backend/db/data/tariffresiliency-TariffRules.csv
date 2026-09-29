@@ -1,0 +1,11 @@
+tariffId,hsCode,originCountryCode,destinationCountryCode,tariffRate,tariffType,effectiveFrom,effectiveTo,source,status
+T001,870830,CHN,USA,25.00,Import,2026-01-01,2026-12-31,US Customs,Active
+T002,854231,CHN,IND,15.00,Import,2026-01-01,2026-12-31,India Customs,Active
+T003,850760,CHN,IND,20.00,Import,2026-01-01,2026-12-31,India Customs,Active
+T004,731815,IND,USA,10.00,Import,2026-01-01,2026-12-31,US Customs,Active
+T005,760612,USA,IND,12.50,Import,2026-01-01,2026-12-31,India Customs,Active
+T006,853710,DEU,IND,8.00,Import,2026-01-01,2026-12-31,India Customs,Active
+T007,392690,VNM,USA,18.00,Import,2026-01-01,2026-12-31,US Customs,Active
+T008,740819,JPN,IND,7.50,Import,2026-01-01,2026-12-31,India Customs,Active
+T009,854231,KOR,USA,12.00,Import,2026-01-01,2026-12-31,US Customs,Active
+T010,850760,KOR,IND,10.00,Import,2026-01-01,2026-12-31,India Customs,Active

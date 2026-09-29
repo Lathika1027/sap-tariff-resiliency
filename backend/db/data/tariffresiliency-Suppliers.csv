@@ -1,0 +1,9 @@
+supplierId,supplierName,countryCode,riskScore,leadTimeDays,currency,active
+SUP001,Tata Auto Components,IND,25.00,12,INR,true
+SUP002,Shanghai Electronics,CHN,65.00,28,CNY,true
+SUP003,Robert Bosch GmbH,DEU,20.00,15,EUR,true
+SUP004,Vietnam Precision Parts,VNM,35.00,18,USD,true
+SUP005,Tokyo Industrial Supply,JPN,15.00,14,JPY,true
+SUP006,US Metals Corporation,USA,30.00,10,USD,true
+SUP007,Chennai Components,IND,18.00,7,INR,true
+SUP008,Seoul Semiconductor,KOR,40.00,21,KRW,true

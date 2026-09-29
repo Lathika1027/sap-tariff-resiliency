@@ -1,0 +1,7 @@
+eventId,eventType,hsCode,originCountryCode,destinationCountryCode,oldTariff,newTariff,impactLevel,detectedAt,status
+EVT001,TariffIncrease,854231,CHN,IND,10.00,15.00,High,2026-09-28T08:30:00Z,New
+EVT002,TariffIncrease,850760,CHN,IND,12.00,20.00,Critical,2026-09-28T09:00:00Z,New
+EVT003,TariffIncrease,870830,CHN,USA,15.00,25.00,High,2026-09-27T11:00:00Z,Analyzed
+EVT004,TariffIncrease,392690,VNM,USA,12.00,18.00,Medium,2026-09-26T14:00:00Z,Analyzed
+EVT005,TariffChange,731815,IND,USA,8.00,10.00,Low,2026-09-25T10:00:00Z,Resolved
+EVT006,TariffIncrease,854231,KOR,USA,8.00,12.00,Medium,2026-09-28T07:45:00Z,New
