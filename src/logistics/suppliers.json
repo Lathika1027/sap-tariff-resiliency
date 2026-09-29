@@ -1,0 +1,38 @@
+[
+    {
+        "name": "Supplier A",
+        "country": "China",
+        "baseCost": 10000,
+        "tariffRate": 25,
+        "shippingCost": 4500,
+        "transitDays": 28,
+        "riskScore": 0.65
+    },
+    {
+        "name": "Supplier B",
+        "country": "Vietnam",
+        "baseCost": 10500,
+        "tariffRate": 10,
+        "shippingCost": 5000,
+        "transitDays": 22,
+        "riskScore": 0.35
+    },
+    {
+        "name": "Supplier C",
+        "country": "India",
+        "baseCost": 9800,
+        "tariffRate": 5,
+        "shippingCost": 4200,
+        "transitDays": 18,
+        "riskScore": 0.25
+    },
+    {
+        "name": "Supplier D",
+        "country": "Taiwan",
+        "baseCost": 10200,
+        "tariffRate": 12,
+        "shippingCost": 4800,
+        "transitDays": 20,
+        "riskScore": 0.30
+    }
+]

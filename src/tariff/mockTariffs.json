@@ -1,0 +1,26 @@
+[
+  {
+    "product": "Steel",
+    "hsCode": "7208",
+    "origin": "China",
+    "destination": "USA",
+    "oldTariff": 15,
+    "newTariff": 25
+  },
+  {
+    "product": "Aluminium",
+    "hsCode": "7601",
+    "origin": "India",
+    "destination": "USA",
+    "oldTariff": 10,
+    "newTariff": 18
+  },
+  {
+    "product": "Semiconductors",
+    "hsCode": "8541",
+    "origin": "Taiwan",
+    "destination": "USA",
+    "oldTariff": 5,
+    "newTariff": 12
+  }
+]
